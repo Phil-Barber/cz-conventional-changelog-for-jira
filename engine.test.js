@@ -324,6 +324,34 @@ describe('commit message', function() {
       )
     ).to.equal(`${jiraUpperCase} ${type}(${scope}): ${subject}\n\n${body}`);
   });
+  it('post-type jiraLocation without scope', function() {
+    expect(
+      commitMessage(
+        {
+          type,
+          scope: null,
+          jira,
+          subject,
+          body
+        },
+        { jiraLocation: 'post-type' }
+      )
+    ).to.equal(`${type} ${jiraUpperCase}: ${subject}\n\n${body}`);
+  });
+  it('post-type jiraLocation with scope', function() {
+    expect(
+      commitMessage(
+        {
+          type,
+          scope,
+          jira,
+          subject,
+          body
+        },
+        { jiraLocation: 'post-type' }
+      )
+    ).to.equal(`${type}(${scope}) ${jiraUpperCase}: ${subject}\n\n${body}`);
+  });
   it('pre-description jiraLocation', function() {
     expect(
       commitMessage(
@@ -420,7 +448,7 @@ describe('commit message', function() {
           subject,
           body
         },
-        { jiraAppend: '+' }
+        { jiraAppend: '+ ' }
       )
     ).to.equal(`${type}(${scope}): ${jiraUpperCase}+ ${subject}\n\n${body}`);
   });
@@ -435,7 +463,7 @@ describe('commit message', function() {
           body
         },
         {
-          jiraAppend: ']',
+          jiraAppend: '] ',
           jiraPrepend: '['
         }
       )
@@ -452,7 +480,7 @@ describe('commit message', function() {
           body
         },
         {
-          jiraAppend: ']',
+          jiraAppend: '] ',
           jiraPrepend: '[',
           jiraLocation: 'pre-type'
         }

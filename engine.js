@@ -36,6 +36,9 @@ module.exports = function(options) {
       case 'pre-type':
         return jiraWithDecorators + type + scope + ': ' + subject;
         break;
+      case 'post-type':
+        return type + scope + jiraWithDecorators + ': ' + subject;
+        break;
       case 'pre-description':
         return type + scope + ': ' + jiraWithDecorators + subject;
         break;
@@ -250,9 +253,14 @@ module.exports = function(options) {
         scope = addExclamationMark ? scope + '!' : scope;
 
         // Get Jira issue prepend and append decorators
-        var prepend = options.jiraPrepend || ''
-        var append = options.jiraAppend || ''
-        var jiraWithDecorators = answers.jira ? prepend + answers.jira + append + ' ': '';
+        const [space_before, space_after] =
+          options.jiraLocation == 'post-type' ? [' ', ''] : ['', ' '];
+        var prepend = options.jiraPrepend || space_before;
+        var append = options.jiraAppend || space_after;
+
+        var jiraWithDecorators = answers.jira
+          ? prepend + answers.jira + append
+          : '';
 
         // Hard limit this line in the validate
         const head = getJiraIssueLocation(options.jiraLocation, answers.type, scope, jiraWithDecorators, answers.subject);
